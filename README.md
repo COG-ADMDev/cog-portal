@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cog-portal
 
-## Getting Started
+Client portal for **Command Ops Group LLC** — a fractional COO and consulting firm operating under reputation-only intake.
 
-First, run the development server:
+Live: [portal.commandopsgroup.com](https://portal.commandopsgroup.com) *(planned)*
+
+## Stack
+
+- Next.js 16 (App Router) + TypeScript
+- Tailwind v4 + shadcn/ui
+- Auth: email OTP + per-client JWT (Phase 4B)
+- Data: TBD (Supabase or SQLite — Phase 4C)
+- Hosting: Vercel
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` and fill in. Required vars are added during Phases 4B–4E.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/                    # App Router pages and layouts
+│   ├── layout.tsx
+│   ├── page.tsx            # Public landing
+│   └── globals.css
+├── components/
+│   └── ui/                 # shadcn components
+└── lib/
+    └── utils.ts            # cn() and helpers
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project deploys to Vercel via GitHub push. Production branch: `main`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Security Posture
 
-## Deploy on Vercel
+- All client data is scoped server-side by `client-id` derived from the authenticated user's JWT.
+- Whitelist of authorized emails maintained in environment / database. Adding stakeholders requires explicit FJ approval.
+- Portal is read-only in v1. Comments and approvals are future scope.
+- No vault content stored in the repo. All client data flows in via authenticated API at request time, or is written by the vault sync engine.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Build Phases
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Phase | Description | Status |
+|---|---|---|
+| 4A | Scaffold (Next.js + shadcn + GitHub + Vercel) | ✅ in progress |
+| 4B | Auth (email OTP, whitelist, JWT) | ⏳ |
+| 4C | Data layer (datastore + API routes) | ⏸ |
+| 4D | UI (dashboard, task list, project tree, downloads) | ⏸ |
+| 4E | Vault → Portal sync (Obsidian plugin) | ⏸ |
+
+## License
+
+Proprietary. All rights reserved by Command Ops Group LLC.
